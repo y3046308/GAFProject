@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "memberCall_forum">
+	<select id="findPost" parameterType="int" resultType="forum">
+		SELECT * FROM forum WHERE num = #{num}
+	</select>
+	<select id="searchForumWId" parameterType="String" resultType="forum">
+		SELECT * FROM forum WHERE id = #{id}
+	</select>
+	<select id="searchForum" parameterType="hashmap" resultType="forum">
+		SELECT * FROM forum WHERE ${value} like #{text}
+	</select>
+	<select id="searchForum2" parameterType="hashmap" resultType="forum">
+		SELECT * FROM forum WHERE ${value1} like #{text} union
+		select * from forum where ${value2} like #{text}
+	</select>
+	<select id="listByNum" parameterType="hashmap" resultType="forum">
+		select * from forum order by ${value} ${order}
+	</select>
+	<update id="incrementViews" parameterType="int">
+		UPDATE forum SET views = (views + 1) where num = #{num}
+	</update>
+	<update id="changePostIndex" parameterType="hashmap">
+		UPDATE forum SET num = #{value} where num = #{num}
+	</update>
+	<update id="updatePost" parameterType="forum">
+		UPDATE forum SET title = #{title}, content = #{content} where num = #{num}
+	</update>	
+	<insert id="insertForum" parameterType="forum" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO forum VALUES
+		(#{num}, #{title}, #{content}, #{id}, #{idate}, #{views})
+	</insert>	
+	<delete id="deletePost" parameterType="int">
+		delete from forum where num = #{num}
+	</delete>
+</mapper>

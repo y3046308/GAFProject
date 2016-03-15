@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "memberCall_id_pw">
+	<select id="showAll" resultType="member">
+		SELECT * FROM id_pw
+	</select>
+	<select id="idCheck" parameterType="String" resultType="member">
+		SELECT * FROM id_pw WHERE id = #{id}
+	</select>
+	<select id="fullCheck" parameterType="member" resultType="member">
+		SELECT * FROM id_pw WHERE id = #{id} and password = #{password}
+	</select>
+	<select id="adminFullCheck" parameterType="String" resultType="member">
+		SELECT * FROM id_pw WHERE id = #{id} and password is null
+	</select>	
+	<select id="listByLvl" resultType="member">
+		SELECT * FROM id_pw order by lvl desc
+	</select>
+	<update id="changePassword" parameterType="member">
+		UPDATE id_pw SET password = #{password} where id = #{id}
+	</update>	
+	<update id="adjustLvl" parameterType="member">
+		UPDATE id_pw SET lvl = #{lvl} where id = #{id}
+	</update>	
+	<update id="incrementLvl" parameterType="member">
+		UPDATE id_pw SET point = (point - lvl), lvl = #{lvl} where id = #{id}
+	</update>
+	<update id="incrementPoint" parameterType="String">
+		UPDATE id_pw SET point = (point + 1) where id = #{id}
+	</update>
+	<insert id="createAccount" parameterType="member" useGeneratedKeys="true"  keyProperty="no">
+		INSERT INTO id_pw(id, password) VALUES(#{id}, #{password})
+	</insert>
+	<delete id="deleteAccount" parameterType="String">
+		delete from id_pw where id = #{id}
+	</delete>
+</mapper>

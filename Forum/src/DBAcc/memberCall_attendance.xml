@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "memberCall_attendance">
+	<select id="listByIdate" resultType="record">
+		select * from attendance order by idate desc
+	</select>
+	<select id="checkAttendance" parameterType="String" resultType="record">
+		select * from attendance where trunc(idate)=trunc(sysdate) and id=#{id}
+	</select>
+	<update id="changeIndex" parameterType="record">
+		UPDATE attendance SET num = #{num} where idate = #{idate}
+	</update>
+	<insert id="insertIdate" parameterType="record" useGeneratedKeys="true" keyProperty="no">
+		INSERT INTO attendance VALUES
+		(#{num}, #{idate}, #{id}, #{icomment})
+	</insert>	
+	<delete id="deleteComment" parameterType="int">
+		delete from attendance where num = #{num}
+	</delete>		
+</mapper>
